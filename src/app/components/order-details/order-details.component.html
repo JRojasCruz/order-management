@@ -1,0 +1,59 @@
+<div class="container">
+  <h1>{{ isEditing ? "Editar Pedido" : "Detalles del Pedido" }}</h1>
+
+  <div *ngIf="!isEditing; else editForm">
+    <p><strong>ID del Pedido:</strong> {{ order.id }}</p>
+    <p><strong>Cliente:</strong> {{ order.customer.name }}</p>
+    <p><strong>Productos:</strong></p>
+    <ul>
+      <li *ngFor="let product of order.products">
+        {{ product.name }} - {{ product.price | currency }}
+      </li>
+    </ul>
+    <p><strong>Total:</strong> {{ order.total | currency }}</p>
+    <button class="btn btn-primary" (click)="toggleEdit()">Editar</button>
+  </div>
+
+  <ng-template #editForm>
+    <form (ngSubmit)="saveOrder()">
+      <div class="mb-3">
+        <label for="customerId" class="form-label">Cliente</label>
+        <select
+          class="form-select"
+          name="customerId"
+          id="customerId"
+          [(ngModel)]="order.customer.id"
+        >
+          <option *ngFor="let customer of customers" [value]="customer.id">
+            {{ customer.name }}
+          </option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="products" class="form-label">Productos</label>
+        <select class="form-select" (change)="addProduct($event)">
+          <option *ngFor="let product of products" [value]="product.id">
+            {{ product.name }}
+          </option>
+        </select>
+        
+        <ul>
+          <li *ngFor="let product of selectedProducts; let i = index">
+            {{ product.name }}
+            <button
+              class="btn btn-danger btn-sm"
+              type="button"
+              (click)="removeProduct(i)"
+            >
+              Quitar
+            </button>
+          </li>
+        </ul>
+      </div>
+      <button type="submit" class="btn btn-success">Guardar</button>
+      <button type="button" class="btn btn-secondary" (click)="toggleEdit()">
+        Cancelar
+      </button>
+    </form>
+  </ng-template>
+</div>

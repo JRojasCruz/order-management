@@ -1,0 +1,30 @@
+<!-- order-list.component.html -->
+<div class="container">
+  <h1>Lista de Pedidos</h1>
+  <button routerLink="/orders/new" class="btn btn-primary">Crear Pedido</button>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Cliente</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ order.customer.name }}</td>
+        <td>{{ order.total }}</td>
+        <td>
+          <button class="btn btn-info" routerLink="/orders/{{ order.id }}">
+            Ver
+          </button>
+          <button class="btn btn-danger" (click)="deleteOrder(order.id)">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
